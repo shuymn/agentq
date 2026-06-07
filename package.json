@@ -3,12 +3,16 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
+  "bin": {
+    "agentq": "./src/cli.ts"
+  },
   "scripts": {
     "postinstall": "lefthook install",
-    "lint": "bunx biome lint .",
-    "lint:fix": "bunx biome lint --fix .",
-    "fmt:fix": "bunx biome format --write .",
-    "fmt:check": "bunx biome format .",
+    "agentq": "bun run src/cli.ts",
+    "lint": "bunx biome check --formatter-enabled=false .",
+    "lint:fix": "bunx biome check --write --formatter-enabled=false .",
+    "fmt:fix": "bunx biome check --write --linter-enabled=false .",
+    "fmt:check": "bunx biome check --linter-enabled=false .",
     "typecheck": "bunx tsc --noEmit",
     "test": "bun test --pass-with-no-tests",
     "check:fast": "bun run fmt:check && bun run lint && bun run typecheck",

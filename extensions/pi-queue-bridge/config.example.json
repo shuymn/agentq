@@ -1,0 +1,12 @@
+{
+  "bridgeAction": {
+    "command": "/review",
+    "args": ["--no-fix"]
+  },
+  "observe": {
+    "currentCommand": ["agentq", "current", "--summary"]
+  },
+  "execute": {
+    "doneCommand": ["agentq", "done"]
+  }
+}
