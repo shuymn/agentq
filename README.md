@@ -1,5 +1,15 @@
 # agentq
 
+Agent Queue is a local coordination CLI for handoffs between coding agents working in the
+same workspace. A Room is derived from the canonical current working directory, and
+Waiters identify themselves with Agent Environment tokens instead of runtime-specific
+role inference.
+
+## Documentation
+
+- Domain language: [`CONTEXT.md`](CONTEXT.md)
+- Adapter JSON contract: [`docs/adapter-contract.md`](docs/adapter-contract.md)
+- Capabilities intentionally outside core: [`docs/negative-space.md`](docs/negative-space.md)
 
 ## Local Setup
 
@@ -9,24 +19,25 @@ bun install
 
 `postinstall` runs `lefthook install` automatically.
 
-## Initial Customization
-
-1. Run template initialization from the repository root. This updates the package name, refreshes shared workflows, removes the template-only README block, deletes the init script itself, and creates a local commit.
+## CLI
 
 ```bash
-./scripts/init-template.sh [new-package-name]
+bun run agentq join --as codex
+bun run agentq listen --as pi -- pi
+bun run agentq handoff --body "implementation ready"
+bun run agentq current
+bun run agentq current --full
+bun run agentq done --body "review complete" --artifact ./review.md
+bun run agentq status
+bun run agentq status --full
+bun run agentq dismiss
 ```
 
-If `new-package-name` is omitted, the script derives it from the `origin` remote basename.
+`current` and `status` default to summary JSON for adapter polling and agent context. Use
+`--full` when scripts need the complete shape documented in `docs/adapter-contract.md`.
 
-2. Replace [`src/index.ts`](src/index.ts) with your actual application entrypoint and package layout.
-3. Rewrite this README with your project's purpose, setup, development workflow, and release information.
-4. Review [`AGENTS.md`](AGENTS.md) and [`docs/`](docs/) and keep only the guidance you want in this repository.
-5. Run `bun run check` before your first project-specific commit.
-
-This repository was initialized from a Bun project template.
-
-Replace this README with project-specific documentation once the repository has a clear purpose, setup flow, and release process.
+Set `AGENTQ_DATA_DIR` to isolate or relocate the local SQLite database and artifact
+directory. If it is unset, Agent Queue uses the default user-local data directory.
 
 ## Local Development
 
@@ -42,16 +53,3 @@ bun run test
 bun run check:fast
 bun run check
 ```
-
-## Suggested README Sections
-
-When you rewrite this file, include only the sections your project actually needs, for example:
-
-- Project overview
-- Requirements
-- Setup
-- Local development commands
-- Testing
-- Deployment or release process
-- Repository layout
-- Links to deeper docs if needed
